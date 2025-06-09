@@ -2,78 +2,97 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentManager {
-    static ArrayList<Student> studentList = new ArrayList<>();
-    static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        boolean x = true;
-        while (x) {
-            System.out.println("1. Add Student");
-            System.out.println("2. Show All Students");
-            System.out.println("3. Find Student");
-            System.out.println("4. Quit");
-            int choice = sc.nextInt();
-            if (choice == 1) {
-                addStudent();
-            } else if (choice == 2) {
-                showAllStudents();
-            } else if (choice == 3) {
-                findStudent();
-            } else if (choice == 4) {
-                x = false;
-            } else {
-                System.out.println("Invalid choice");
-            }
+    static class Student {
+        String name;
+        int age;
+        int id;
+
+        Student(String name, int age, int id) {
+            this.name = name;
+            this.age = age;
+            this.id = id;
         }
     }
 
-    public static void addStudent() {
-        System.out.println("Enter name: ");
-        String a = sc.next();
-        System.out.println("Enter age: ");
-        int b = sc.nextInt();
-        System.out.println("Enter ID: ");
-        int c = sc.nextInt();
-        studentList.add(new Student(a, b, c));
+    static ArrayList<Student> students = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        boolean isRunning = true;
+        while (isRunning) {
+            showMenu();
+            int choice = scanner.nextInt();
+            isRunning = handleChoice(choice);
+        }
+    }
+
+    private static void showMenu() {
+        System.out.println("\nStudent Management System");
+        System.out.println("1. Add Student");
+        System.out.println("2. Show All Students");
+        System.out.println("3. Find Student by ID");
+        System.out.println("4. Exit");
+        System.out.print("Enter your choice: ");
+    }
+
+    private static boolean handleChoice(int choice) {
+        switch (choice) {
+            case 1 -> addStudent();
+            case 2 -> showAllStudents();
+            case 3 -> findStudent();
+            case 4 -> {
+                System.out.println("Exiting...");
+                return false;
+            }
+            default -> System.out.println("Invalid choice. Please try again.");
+        }
+        return true;
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter student name: ");
+        String name = scanner.next();
+        System.out.print("Enter student age: ");
+        int age = scanner.nextInt();
+        System.out.print("Enter student ID: ");
+        int id = scanner.nextInt();
+
+        Student newStudent = new Student(name, age, id);
+        students.add(newStudent);
         System.out.println("Student added successfully!");
     }
 
-    public static void showAllStudents() {
-        for (int i = 0; i < studentList.size(); i++) {
-            System.out.println("Name: " + studentList.get(i).name);
-            System.out.println("Age: " + studentList.get(i).age);
-            System.out.println("ID: " + studentList.get(i).id);
+    private static void showAllStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students to display.");
+            return;
+        }
+
+        for (Student s : students) {
+            printStudent(s);
         }
     }
 
-    public static void findStudent() {
-        System.out.println("Enter ID to search:");
-        int z = sc.nextInt();
-        for (int i = 0; i < studentList.size(); i++) {
-            if (studentList.get(i).id == z) {
-                System.out.println("Name: " + studentList.get(i).name);
-                System.out.println("Age: " + studentList.get(i).age);
-                System.out.println("ID: " + studentList.get(i).id);
-                return;
+    private static void findStudent() {
+        System.out.print("Enter student ID to search: ");
+        int searchId = scanner.nextInt();
+        boolean found = false;
+
+        for (Student s : students) {
+            if (s.id == searchId) {
+                printStudent(s);
+                found = true;
+                break;
             }
         }
-        System.out.println("Student not found.");
+
+        if (!found) {
+            System.out.println("Student not found.");
+        }
     }
 
-    public static void unusedMethod() {
-        int x = 5;
-        int y = x + 10;
-    }
-}
-
-class Student {
-    public String name;
-    public int age;
-    public int id;
-
-    public Student(String n, int a, int i) {
-        name = n;
-        age = a;
-        id = i;
+    private static void printStudent(Student s) {
+        System.out.println("Name: " + s.name + ", Age: " + s.age + ", ID: " + s.id);
     }
 }
