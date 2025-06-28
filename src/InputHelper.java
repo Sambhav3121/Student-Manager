@@ -7,7 +7,6 @@ public class InputHelper {
         System.out.print(prompt);
         return scanner.nextLine();
     }
-
     public static int getIntInput(String prompt) {
         while (true) {
             System.out.print(prompt);
