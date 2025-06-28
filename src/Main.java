@@ -10,7 +10,6 @@ public class Main {
             isRunning = handleChoice(choice);
         }
     }
-
     private static boolean handleChoice(int choice) {
         switch (choice) {
             case 1 -> addStudent();
@@ -24,7 +23,7 @@ public class Main {
         }
         return true;
     }
-
+    
     private static void addStudent() {
         String name = InputHelper.getStringInput("Enter student name: ");
         int age = InputHelper.getIntInput("Enter student age: ");
